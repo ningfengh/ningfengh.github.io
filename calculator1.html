@@ -19,47 +19,47 @@
     </div>
 
     <div class="form-label-group">
-      <input type="number" id="price" class="form-control" ng-model="price" placeholder="price" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" required autofocus>
+      <input type="number" step="0.01" id="price" class="form-control" ng-model="price" placeholder="price" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" required autofocus>
       <label for="price">Price价格</label>
     </div>
 
     <div class="form-label-group">
-      <input type="number" id="conversionRate" class="form-control" ng-model="conversionRate" placeholder="conversionRate" required>
+      <input type="number" id="conversionRate" step="0.01" class="form-control" ng-model="conversionRate" placeholder="conversionRate" required>
       <label for="conversionRate">Conversion rate汇率</label>
     </div>
 
     <div class="form-label-group">
-      <input type="number" id="taxRate" class="form-control" ng-model="taxRate" placeholder="taxRate" required>
+      <input type="number" id="taxRate" step="0.01" class="form-control" ng-model="taxRate" placeholder="taxRate" required>
       <label for="taxRate">Tax rate税率</label>
     </div>
 
     <div class="form-label-group">
-      <input type="number" id="shippingFee" class="form-control" ng-model="shippingFee" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" placeholder="shippingFee" required>
+      <input type="number" id="shippingFee" step="0.01" class="form-control" ng-model="shippingFee" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" placeholder="shippingFee" required>
       <label for="shippingFee">Shipping fee商家邮费</label>
     </div>
 
     <div class="form-label-group">
-      <input type="number" id="gasAdjustRate" class="form-control" ng-model="gasAdjustRate"  onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" placeholder="gasAdjustRate" required>
+      <input type="number" id="gasAdjustRate" step="0.01" class="form-control" ng-model="gasAdjustRate"  onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" placeholder="gasAdjustRate" required>
       <label for="gasAdjustRate">Gas adjust rate油费单价</label>
     </div>
 
     <div class="form-label-group">
-      <input type="number" id="interestRate" class="form-control" ng-model="interestRate" placeholder="interestRate" required>
+      <input type="number" id="interestRate" step="0.01" class="form-control" ng-model="interestRate" placeholder="interestRate" required>
       <label for="interestRate">Interest rate利率</label>
     </div>
 
     <div class="form-label-group">
-      <input type="number" id="insurance" class="form-control" ng-model="insurance" placeholder="insurance" required>
+      <input type="number" id="insurance" step="0.01" class="form-control" ng-model="insurance" placeholder="insurance" required>
       <label for="insurance">Insurance保险保值</label>
     </div>
 
     <div class="form-label-group">
-      <input type="number" id="weightLb" class="form-control" ng-model="weightLb" placeholder="weightLb" required>
+      <input type="number" id="weightLb" step="0.01" class="form-control" ng-model="weightLb" placeholder="weightLb" required>
       <label for="weightLb">weightLb磅</label>
     </div>
 
     <div class="form-label-group">
-      <input type="number" id="weightOz" class="form-control" ng-model="weightOz" placeholder="weightOz" required>
+      <input type="number" id="weightOz" step="0.01" class="form-control" ng-model="weightOz" placeholder="weightOz" required>
       <label for="weightOz">weightOz盎司</label>
     </div>
 
