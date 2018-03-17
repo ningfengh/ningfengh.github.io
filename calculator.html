@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="angular.js"></script>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+
+<div ng-app="myCalculator" ng-controller="myCtrl">
+  <p>Price价格: <input type="number" ng-model="price"> </p>
+  <p>Conversion rate汇率 : <input type="number" ng-model="conversionRate"></p>
+  <p>Tax rate税率: <input type="number" ng-model="taxRate"></p>
+  <P>Shipping fee商家邮费: <input type="number" ng-model="shippingFee"></p>
+  <p>Gas adjust rate油费单价: <input type="number" ng-model="gasAdjustRate"></p>
+  <p>Interest rate利率: <input type="number" ng-model="interestRate"></p>
+  <p>Insurance保险保值: <input type="number" ng-model="insurance"></p>
+  <p>weightLb磅: <input type="number" ng-model="weightLb"></p>
+  <p>weightOz盎司: <input type="number" ng-model="weightOz"></p>
+  <P>Types类型: <select ng-model="typeSelection.type" ng-change="onChangeType()" ng-options="obj.price as obj.type for obj in types">
+
+  </select></p>
+  <p>price per pound每磅单价: {{typeSelection.type}} </p>
+
+  <p>Gas cost油费: {{gasCost()}} </p>
+  <p>Residual weight剩余重量: {{residualWeight()}} </p>
+  <p>Shipping cost邮寄费用: {{shippingCost()}} </p>
+  <p>Tax cost税: {{taxCost()}} </p>
+  <p>Total cost总费用: {{totalCost()}} </p>
+  <p>Interest总收益: {{interest()}} </p>
+  <p>Total price总价: {{totalPrice()}} </p>
+</div>
+
+</body>
+</html>
+
+<script>
+var app = angular.module('myCalculator', []);
+app.controller('myCtrl', function($scope) {
+    $scope.price= 44.0;
+    $scope.conversionRate= 6.7;
+    $scope.taxRate=9.5;
+    $scope.shippingFee=0.0;
+    $scope.gasAdjustRate=0.3;
+    $scope.interestRate=0.1;
+    $scope.insurance=0.0;
+    $scope.weightLb=1.0;
+    $scope.weightOz=4.0;
+
+    $scope.types= [{"type":"food and formula食品与奶粉", "price":2.0},
+                   {"type":"vitamin and nutritions维生素与营养品", "price":3.0},
+                   {"type":"apparel, shoes and grocery衣服鞋日常用品", "price":3.5},
+                   {"type":"beauty化妆品", "price":4.5},
+                   {"type":"designer bag and cloth名牌包衣服", "price":5.5},
+                   {"type":"fragrance, watch, jewlery香水手表首饰", "price":5.5},
+                   {"type":"fishing, sport good渔具运动用品", "price":10.0},
+                   {"type":"seacucumber, ginsen, luxury brand bag, watch, shoe海参人参奢侈包表鞋", "price":15.0},
+                   {"type":"wine, birdnet酒燕窝", "price":20.0},
+                   {"type":"consumer elctronics + flatrate tax $50/$80消费电子+50/80块", "price":20.0}
+                 ]
+    $scope.typeSelection = {
+      type: null
+    };
+
+    $scope.gasCost = function() {
+
+      return 0.5 * 25 * $scope.gasAdjustRate
+
+    }
+    $scope.residualWeight = function() {
+      return Math.max(Math.ceil($scope.weightLb + $scope.weightOz * 0.065 - 2), 0)
+    }
+    $scope.taxCost = function() {
+      return $scope.price * $scope.taxRate / 100.0
+    }
+    $scope.totalCost = function() {
+      return ($scope.price + $scope.taxCost() + $scope.shippingCost() + $scope.gasCost() + $scope.insurance*0.05 + $scope.shippingFee) * $scope.conversionRate
+    }
+    $scope.interest = function() {
+      return $scope.totalCost() * $scope.interestRate
+    }
+
+    $scope.totalPrice = function() {
+      return $scope.interest() + $scope.totalCost()
+    }
+
+    $scope.shippingCost = function() {
+      return $scope.typeSelection.type * (2 + $scope.residualWeight())
+    }
+
+    $scope.onCHangeType = function() {
+      $scope.digest()
+    }
+
+});
+</script>
+<script>
+
+</script>
