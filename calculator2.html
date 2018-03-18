@@ -267,7 +267,7 @@ angular.module('myCalculator', ['ui.bootstrap']).controller('myCtrl', function (
   }
 
   $scope.totalCost2 = function() {
-    return parseFloat((($scope.price + $scope.taxCost() + $scope.shippingCost2() + $scope.insurance*0.05 + $scope.shippingFee) * $scope.conversionRate).toFixed(2))
+    return parseFloat((($scope.price + $scope.shippingCost2() + $scope.insurance*0.05 + $scope.shippingFee) * $scope.conversionRate).toFixed(2))
   }
 
   $scope.interest2 = function() {
