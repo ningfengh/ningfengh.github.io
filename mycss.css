@@ -1,3 +1,5 @@
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
 :root {
   --input-padding-x: .75rem;
   --input-padding-y: .75rem;
