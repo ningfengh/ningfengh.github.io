@@ -41,25 +41,29 @@
     </div>
 
     <div class="form-label-group">
-      <input type="number" id="gasAdjustRate" step="0.01" class="form-control" ng-model="gasAdjustRate"  onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" placeholder="gasAdjustRate" required>
-      <label for="gasAdjustRate">Gas adjust rate油费单价</label>
+      <input type="number" id="gasRate" step="0.01" class="form-control" ng-model="gasRate"  onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" placeholder="gasRate" required>
+      <label for="gasRate">Gas rate油费单价</label>
     </div>
 
-</form>
-   <ul class="list-group form-signin">
-   <li class="list-group-item list-group-item-info">Tax cost税: ${{taxCost()}} </li>
-   <li class="list-group-item list-group-item-info">Gas cost油费: ${{gasCost()}}</li>
-   <li class="list-group-item list-group-item-info">Total good cost总商品成本: ${{totalGoodCost()}} </li>
-   </ul>
+    <div class="form-label-group">
+      <input type="number" id="distance" step="0.01" class="form-control" ng-model="distance"  onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" placeholder="distance" required>
+      <label for="distance">Distance距离</label>
+    </div>
 
+    <div class="form-label-group">
+      <input type="number" id="gasAdjustRate" step="0.01" class="form-control" ng-model="gasAdjustRate"  onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" placeholder="gasAdjustRate" required>
+      <label for="gasAdjustRate">Adjust rate合单调整系数</label>
+    </div>
+    <div class="form-label-group">
+      <input type="number" id="publicTrans" step="0.01" class="form-control" ng-model="publicTrans"  onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" placeholder="publicTrans" required>
+      <label for="publicTrans">Public Transportation公共交通</label>
+    </div>
 
-
-<form class="form-signin">
   <hr>
   <p> International Shipping国际运费</p>
   <div class="btn-group special">
          <label class="btn btn-secondary" ng-model="ShippingMethod" uib-btn-radio="'FlatRate'" >FlatRate一口价</label>
-         <label class="btn btn-secondary" ng-model="ShippingMethod" uib-btn-radio="'Detail'" >Detail明细</label>
+         <label class="btn btn-secondary" ng-model="ShippingMethod" uib-btn-radio="'Detail'" >Weight按重量</label>
   </div>
 
     <div class="form-label-group" ng-hide="ShippingMethod=='Detail'">
@@ -69,12 +73,12 @@
 
     <div class="form-label-group" ng-hide="ShippingMethod=='FlatRate'">
       <input type="number" id="weightLb" step="0.01" class="form-control" ng-model="weightLb" placeholder="weightLb" required>
-      <label for="weightLb">weightLb磅</label>
+      <label for="weightLb">Lb磅</label>
     </div>
 
     <div class="form-label-group" ng-hide="ShippingMethod=='FlatRate'">
       <input type="number" id="weightOz" step="0.01" class="form-control" ng-model="weightOz" placeholder="weightOz" required>
-      <label for="weightOz">weightOz盎司</label>
+      <label for="weightOz">Oz盎司</label>
     </div>
 
     <div class="form-label-group" ng-hide="ShippingMethod=='FlatRate'">
@@ -83,16 +87,9 @@
     </div>
 
     <div class="form-label-group" ng-hide="ShippingMethod=='FlatRate'">
-      <select id="typeSelection" ng-model="typeSelection.type" ng-options="obj.price as obj.type for obj in types" class="form-control" > </select>
+      <select id="typeSelection" ng-model="typeSelection.type" ng-options="obj as obj.type for obj in types track by obj.type" class="form-control" > </select>
     </div>
-  </form>
-  <ul class="list-group form-signin">
-    <li class="list-group-item list-group-item-info"  ng-hide="ShippingMethod=='FlatRate'">price per pound每磅单价: ${{typeSelection.type}}</li>
-    <li class="list-group-item list-group-item-info"  ng-hide="ShippingMethod=='FlatRate'">Residual weight剩余重量: {{residualWeight()}}</li>
-    <li class="list-group-item list-group-item-info">International Shipping cost邮寄费用: ${{shippingCost()}}</li>
-  </ul>
 
-<form class="form-signin">
   <hr>
   <p> Currency and profit汇率转换和利润</p>
   <p> current rate参考汇率:  </p>
@@ -107,12 +104,79 @@
   </div>
 </form>
 
+<table class="table table-striped" ng-show="ShippingMethod=='Detail' && Country=='US'">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">TOPEX海淘</th>
+      <th scope="col">YUETU转运</th>
 
-  <ul class="list-group form-signin">
-  <li class="list-group-item list-group-item-success">Total cost总费用: ￥{{totalCost()}} </li>
-  <li class="list-group-item list-group-item-success">profit总收益: ￥{{interest()}} </li>
-  <li class="list-group-item list-group-item-success">Total price总价: ￥{{totalPrice()}} </li>
-</ul>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Total Cost总成本</th>
+      <td>￥{{totalCost()}}</td>
+      <td>￥{{totalCost2()}}</td>
+
+    </tr>
+    <tr>
+      <th scope="row">Margin利润</th>
+      <td>￥{{interest()}}</td>
+      <td>￥{{interest2()}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Price售价</th>
+      <td>￥{{totalPrice()}}</td>
+      <td>￥{{totalPrice2()}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="table table-striped" ng-show="ShippingMethod=='FlatRate' && Country=='US'">
+
+  <tbody>
+    <tr>
+      <th scope="row">Total Cost总成本</th>
+      <td>￥{{totalCost()}}</td>
+
+    </tr>
+    <tr>
+      <th scope="row">Margin利润</th>
+      <td>￥{{interest()}}</td>
+
+    </tr>
+    <tr>
+      <th scope="row">Price售价</th>
+      <td>￥{{totalPrice()}}</td>
+
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="table table-striped" ng-show="Country=='CAN'">
+
+  <tbody>
+    <tr>
+      <th scope="row">Total Cost总成本</th>
+      <td>￥{{totalCost3()}}</td>
+
+    </tr>
+    <tr>
+      <th scope="row">Margin利润</th>
+      <td>￥{{interest3()}}</td>
+
+    </tr>
+    <tr>
+      <th scope="row">Price售价</th>
+      <td>￥{{totalPrice3()}}</td>
+
+    </tr>
+  </tbody>
+</table>
+
+
 </div>
 </body>
 
@@ -123,35 +187,45 @@ angular.module('myCalculator', ['ui.bootstrap']).controller('myCtrl', function (
   $scope.conversionRate= 6.7;
   $scope.taxRate=9.5;
   $scope.shippingFee=0.0;
+  $scope.publicTrans = 0.0;
   $scope.shippingFR = 20.0;
+  $scope.gasRate=0.5;
+  $scope.distance=25;
   $scope.gasAdjustRate=0.3;
   $scope.interestRate=0.1;
   $scope.insurance=0.0;
   $scope.weightLb=1.0;
-  $scope.weightOz=4.0;
+  $scope.weightOz=0.0;
   $scope.Country = 'US';
   $scope.ShippingMethod = 'FlatRate'
-  $scope.types= [{"type":"food and formula食品与奶粉", "price":2.0},
-                 {"type":"vitamin and nutritions维生素与营养品", "price":3.0},
-                 {"type":"apparel, shoes and grocery衣服鞋日常用品", "price":3.5},
-                 {"type":"beauty化妆品", "price":4.5},
-                 {"type":"designer bag and cloth名牌包衣服", "price":5.5},
-                 {"type":"fragrance, watch, jewlery香水手表首饰", "price":5.5},
-                 {"type":"fishing, sport good渔具运动用品", "price":10.0},
-                 {"type":"seacucumber, ginsen, luxury brand bag, watch, shoe海参人参奢侈包表鞋", "price":15.0},
-                 {"type":"wine, birdnet酒燕窝", "price":20.0},
-                 {"type":"consumer elctronics + flatrate tax $50/$80消费电子+50/80块", "price":20.0}
+  $scope.types= [
+                 {"type":"food食品", "price":[2.0, 4.5, 5.5]},
+                 {"type":"formula奶粉", "price":[2.0, 4.5, 4.5]},
+                 {"type":"vitamin and nutritions维生素与营养品", "price":[3.0, 7.0, NaN]},
+                 {"type":"apparel, shoes and grocery衣服鞋日常用品", "price":[3.5, 4.5, 6.99]},
+                 {"type":"beauty化妆品", "price":[4.5, 7.0, 6.99]},
+                 {"type":"designer bag and cloth名牌包衣服", "price":[5.5, 7.0, NaN]},
+                 {"type":"fragrance, watch, jewlery香水手表首饰", "price":[5.5, 7.0, NaN]},
+                 {"type":"fishing, sport good渔具运动用品", "price":[10.0, NaN, NaN]},
+                 {"type":"seacucumber, ginsen, luxury brand bag, watch, shoe海参人参奢侈包表鞋", "price":[15.0, NaN, NaN]},
+                 {"type":"wine, birdnet酒燕窝", "price":[20.0, NaN, NaN]},
+                 {"type":"consumer elctronics + flatrate tax $50/$80消费电子+50/80块", "price":[20.0, 7, NaN]}
                ]
+ console.log($scope.types)
   $scope.typeSelection = {
-    type: null
+    type: $scope.types[0]
   };
 
   $scope.gasCost = function() {
-    return 0.5 * 25 * $scope.gasAdjustRate
+    return $scope.gasRate * $scope.distance * $scope.gasAdjustRate + $scope.publicTrans
   }
 
   $scope.residualWeight = function() {
     return Math.max(Math.ceil($scope.weightLb + $scope.weightOz * 0.065 - 2), 0)
+  }
+
+  $scope.residualWeight2 = function() {
+    return Math.max($scope.weightLb + $scope.weightOz * 0.065 - 1, 0)
   }
 
   $scope.taxCost = function() {
@@ -160,6 +234,15 @@ angular.module('myCalculator', ['ui.bootstrap']).controller('myCtrl', function (
 
   $scope.totalGoodCost = function() {
     return parseFloat(($scope.price + $scope.taxCost() + $scope.shippingFee).toFixed(2))
+  }
+
+
+  $scope.shippingCost = function() {
+    if ($scope.ShippingMethod=='FlatRate'){
+      return $scope.shippingFR
+    } else {
+      return $scope.typeSelection.type.price[0] * (2 + $scope.residualWeight())
+    }
   }
 
   $scope.totalCost = function() {
@@ -174,15 +257,46 @@ angular.module('myCalculator', ['ui.bootstrap']).controller('myCtrl', function (
     return parseFloat(($scope.interest() + $scope.totalCost()).toFixed(2))
   }
 
-  $scope.shippingCost = function() {
+
+  $scope.shippingCost2 = function() {
     if ($scope.ShippingMethod=='FlatRate'){
       return $scope.shippingFR
     } else {
-      return $scope.typeSelection.type * (2 + $scope.residualWeight())
+      return $scope.typeSelection.type.price[1] + Math.ceil($scope.residualWeight2() / 0.1)*0.5
     }
   }
 
+  $scope.totalCost2 = function() {
+    return parseFloat((($scope.price + $scope.taxCost() + $scope.shippingCost2() + $scope.gasCost() + $scope.insurance*0.05 + $scope.shippingFee) * $scope.conversionRate).toFixed(2))
+  }
 
+  $scope.interest2 = function() {
+    return parseFloat(($scope.totalCost2() * $scope.interestRate).toFixed(2))
+  }
+
+  $scope.totalPrice2 = function() {
+    return parseFloat(($scope.interest2() + $scope.totalCost2()).toFixed(2))
+  }
+
+  $scope.shippingCost3 = function() {
+    if ($scope.ShippingMethod=='FlatRate'){
+      return $scope.shippingFR
+    } else {
+      return $scope.typeSelection.type.price[2] * ($scope.weightLb + $scope.weightOz * 0.065)
+    }
+  }
+
+  $scope.totalCost3 = function() {
+    return parseFloat((($scope.price + $scope.taxCost() + $scope.shippingCost3() + $scope.gasCost() + $scope.insurance*0.05 + $scope.shippingFee) * $scope.conversionRate).toFixed(2))
+  }
+
+  $scope.interest3 = function() {
+    return parseFloat(($scope.totalCost3() * $scope.interestRate).toFixed(2))
+  }
+
+  $scope.totalPrice3 = function() {
+    return parseFloat(($scope.interest3() + $scope.totalCost3()).toFixed(2))
+  }
 
 
   $scope.$watchCollection('Country', function () {
@@ -196,8 +310,8 @@ angular.module('myCalculator', ['ui.bootstrap']).controller('myCtrl', function (
 
    $scope.$watchCollection('ShippingMethod', function () {
        console.log($scope.ShippingMethod)
-
-    });
+       console.log($scope.typeSelection)
+   });
 
 });
 </script>
